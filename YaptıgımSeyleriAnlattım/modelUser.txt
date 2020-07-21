@@ -1,0 +1,42 @@
+models teki User.js yi oluşturmak için ==>
+1- ilk önce dan 1 tane obje oluşturdum.=> const mongoose=require("mongoose") 
+2- daha sonra mongoose un içindeki Schema dan 1 tane obje oluşturdum => const Schema=mongoose.Schema;
+3- daha sonra UserSchema için 1 tane Schema dan yeni bir obje oluşturdum=> const UserSchema=new Schema({...});
+4- daha sonra bu UserSchema içine kullanıcıdan alaccagım bigilere göre object literal notation oluşturdum.
+ const UserSchema = new Schema({
+    // kullanıcının name inin karşılaması gerektigi kurallar.
+     name :{
+         type: String,
+         required:[true,"please enter your name"] // kullanıcı name input alanını boş bırakmaması için.
+     },
+     // kullanıcının email inin karşılaması gerektigi kurallar.
+     email :{
+         type:String,
+         required:[true,"please enter your email"],// kullanıcı email input alanını boş bırakmaması için.
+         uniuqe:[true,"Please enter correct email"], // bu email e sahip bir kullanıcı nın olmaması için.
+         match:[ // girilen email in dgoru email formatında olması için.
+            /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
+             "please enter write syntax email"
+         ]
+     },
+     // yeni bir kullanıcı eklendiğinde eger kullanıcı name ini girmezse name i user yada admin olur.
+     /*
+     role :{
+         type:String,
+         default:"user", // eger yeni user eklendiginde user name i boş bırakırsa default olarak nami user olur.
+         enum:["user","admin"]
+     }, */
+     // kullanıcının passwordünün karşılaması gerektigi kurallar.
+     password :{
+         type:String,
+         minlength : 6,// password min 6 karakter uzunlugunda olması için
+         required:[true,"please enter your password"], // user password input alanını boş bırakmaması için.
+         select:false // password ün görünür olmaması için.
+     },
+});
+
+UserSchema içine giridigm object literal notationlar bazı kurallar aldı
+örn; password minimum 6 length e sahip olacak mutlaka password e sahip olması gerekecek vs.
+
+5- en sonunda bu  modülü diger sayfalarda kullanabilmek için ve mongoDb ye collections olarak kaydetmek için export ettim,
+module.exports=mongoose.model("user",UserSchema); ...

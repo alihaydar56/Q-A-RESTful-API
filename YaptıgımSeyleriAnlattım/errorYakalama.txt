@@ -1,0 +1,25 @@
+express te hata yakalamak:
+1-senkron=express te eger bizim kodumuz senkron ise express bu hatayı kendisi yakalıyacaktır ve throw new error ile dönecektir.
+2-asenkron=eger bizim kodumuz asenkron yapıda ise express bu kodu yakalıyamaz bu yüzden bizim bu hatayı catch(next) ile yakalamamız gerekiyor.
+***************************************************************************************************
+1-SENKRON HATAYI YAKALAMAK İÇİN.
+app.get("/error",(req,res,next( =>{
+   throw new error("bir hata oluştu"); // senkron kod lardaki hatayı yakalamak için bu kullanılır.
+});
+
+
+**************************************************************************************************
+
+2-ASENKRON HATAYI YAKALAMAK İÇİN
+adım adım error yakalamak için yaptıklarım==>
+1- ilk önce middlewares adında 1 dosya oluşturdum
+2- middlewares in içine errors adında yani bir dosya oluşturdum.
+3- errors ün içine customErrorHandler.js adında bir tane script dosyası oluşturdum.
+4- ve customErrorHandler.js içinde eger harhangi bir hata olursa(kullanıcı tarafından,kullanıcı yanlış inputta girerse
+örn:şifre min 6 karakter ama kullanıcı 5 karakter girerse json ile kullanıcıya işlemin başarısız oldugunu göstericez.
+5-daha sonra server.js içinde app.use(errorHandler(customErrorHandler içindeki method)); u kullandım.
+6- ve en sonunda auth register içinde kullanıcının bilgileri try-catch blok içine aldım herhangi bir hata olursa bu hatayı da 
+    catch(err){
+      return next(err); ile döndürdüm.
+   }
+**************************************************************************************************

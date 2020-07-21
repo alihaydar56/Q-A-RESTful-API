@@ -1,0 +1,14 @@
+POST request ile user eklemek için ==>
+1- ilk önce postman ile body deki row u seçip json objesini seçtim
+2- daha sonra yeni kullanıcının bilgilerini json verisi tarzında yazdım.
+{
+	"name":"Ali Haydar Sevgili",
+	"email":"alihaydar@gmail.com",
+	"password":"123456",
+	"role":"admin"
+}
+
+3- daha sonra Controller daki auth a gidip javascript Destructing i kullanarak req.body deki bilgileri yeni degerlere atadım.
+ const {name,email,password,role}= req.body ile req.body yani postmandan gelen bilgileri aldım ve User a gönderdim.
+4- en sonunda server.js ye geldim ve postman dan ekledigim yeni user ı kaydetmek için==> app.use(express.json()) ile 
+yeni kullanıcıyı mongodb ye ekledim.

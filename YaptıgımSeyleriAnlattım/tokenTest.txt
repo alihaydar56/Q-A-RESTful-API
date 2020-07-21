@@ -1,0 +1,19 @@
+KULLANICI DAHA ÖNCE REGİSTER YAPMIŞMI YAPMAMIŞMI KONTROL ETMEK İÇİN==>
+
+aşamalar==> Router(auth)>>Controller(auth)>>Helper(Authorization(helperToken))>>middlewares(Authorization(tokenTest.js))
+
+ilk önce http://localhost:5000/api/register/tokentTest e request yapıyoruz(router(auth)).
+daha sonra controller(auth) ile 1 tane tokenTest=(req,res,next){...} yaptık ve bu helper(authorization(helperToken)) a gitti.
+helperToken.js ise sendJwtToClient=(user,res){...} ile res.cookie ile cookie ye user ın istedigimiz parametrelerini global değişkene atadı.
+helperToken ayrıca kullanıcıLoginYaptımı ve getAccessToRouter adında 2 tane method içeriyor; kullanıcıLoginYaptımı=kullanıcının daha önce register yaptıgını kontrol eder.
+getAccessToRouter= kullanıcının access_token ını kotrol eder ve tokenTest de ==>
+const access_token=getAccess_tokenFromHeader(req);
+  jwt.verify(access_token,JWT_SECRET_KEY,(err,decoded) =>{
+      if(err){ // eger herhangi bir error olursa kulalnıcya sayfaya giriş izni verilmez.
+          return next(new customError("you are not allowed to authorized to access",401));
+      }
+      console.log(decoded);
+      next();
+  })
+  next(); bu şekilde kullanılır.
+

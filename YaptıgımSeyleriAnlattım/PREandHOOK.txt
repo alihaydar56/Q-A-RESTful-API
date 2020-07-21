@@ -1,0 +1,18 @@
+PRE and HOOK hash password ==>
+1- ilk önce bcrypjs yi install yaptım
+2- daha sonra User da module.export dan önce UserSchema.pre("save",function(next){
+
+ if(!this.isModified("password")){ // burada eger kullanıcı şifresini degiştirmemişse bilgiler güncellenmiyecek
+        next();
+    }
+
+    bcrypt.genSalt(10, (err, salt)=> { // kullanıcı nın girdiği yeni password sa bu password u 'hash' yapacak.
+        bcrypt.hash(this.password, salt, (err, hash) => {
+            if(err===true)
+                next(); // eger herhangi bir hata olursa kullanıcıya hata oldugu gösterilecek(örn yanlış formatta email)
+            
+            this.password=hash;
+            next();
+        });
+    });
+});
